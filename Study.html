@@ -58,6 +58,14 @@ DESCRIPTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     }, []);
   };
 
+  // Average CIs
+var imgLink_avg = [
+  "ci_AppAff_instruction.png", 
+  "ci_AppAff_vaast.png", 
+  "ci_AppAgg_instruction.png",
+  "ci_AppAgg_vaast.png"
+];
+
   // Subgroup CIs
 var cis_AppAff_blue_G1B_vaast = [
 "1",
@@ -508,20 +516,17 @@ var cis_AppAgg_yellow_G1Y_instruction = [
 "400"
 ];
 
+  // Avg CIs
+
+  CIsStims_avg = imgLink_avg.map(function(e) {return githubCIs + e});
+  var CIsStims_avg = _.flattenDeep([CIsStims_avg]);
+  preloadimages.push(CIsStims_avg);
+  CIsStims_avg = CIsStims_avg.map(function(e) {return {imgHtml: "<img class='imgJudge' src='" + e + "'>"}});
+  CIsStims_avg = _.shuffle(CIsStims_avg);
+
 
   // Subgroup CIs
-  /*
-var preview_subgroup = [
-"ci_16_sbgp_AppAff_blue_G1B_vaast.png",
-"ci_27_sbgp_AppAff_yellow_G1B_vaast.png",
-"ci_51_sbgp_AppAff_blue_G1Y_vaast.png",
-"ci_80_sbgp_AppAff_yellow_G1Y_vaast.png",
-"ci_104_sbgp_AppAgg_blue_G1B_vaast.png",
-"ci_129_sbgp_AppAgg_yellow_G1B_vaast.png",
-"ci_123_sbgp_gp2_Av_agg.png",
-"ci_126_sbgp_gp1_Ap_agg.png"
-];
-*/
+
   // Randomly pick n subgroup IDs from the two conditions
   cis_AppAff_blue_G1B_vaast = _.sampleSize(cis_AppAff_blue_G1B_vaast, n);
   cis_AppAff_yellow_G1B_vaast = _.sampleSize(cis_AppAff_yellow_G1B_vaast, n);
@@ -610,24 +615,6 @@ var preview_subgroup = [
       check_fn: check_consent
     };
 
-  var Quit_expe = {
-    type: "html-keyboard-response",
-    post_trial_gap: 300,
-    choices: [32],
-    stimulus: function() {
-      var html = "";
-      html += "<h1>Before starting...</h1>";
-      html += "<p class='justify'>You can quit the study at any time by closing the browser window. However, please be aware ";
-      html += "that this will <b>end your participation</b>. If you are certain that you want to quit or encounter technical issues ";
-      html += "that force you to quit, <b>you can still receive a partial reward proportionate to the time you actually spent</b> on ";
-      html += "the study. If this occurs, please take the following steps: Return the study via the Prolific study page as ";
-      html += "quickly as possible (please do not submit unless you have completed the study and received a completion code). ";
-      html += "Send a message to the researcher via the Prolific study page, stating that you completed part of the study ";
-      html += "(this will ensure that the researcher knows you should receive a partial reward). </br></br> ";
-      html += "<p></br>Press <span class='light-keys'><kbd>space</kbd></span> to continue</p>";
-      return html;
-    },
-  };
 
    var instr_gene = {
     type: "html-keyboard-response",
@@ -636,9 +623,10 @@ var preview_subgroup = [
     stimulus: function() {
       var html = "";
       html += "<h1>Faces rating</h1>";
-      html += "<p class='justify'>In this study, you task is to <b>evaluate several faces</b> (40 faces in total). You will indicate, "
+      html += "<p class='justify'>In this study, you task is to <b>evaluate several faces</b> (36 faces in total). You will indicate, "
       html += "for each face, to what extent this face looks <b>aggressive, trustworthy</b> and ";
-      html += "<b>criminal</b> (from 0 = not at all to 100 = totally). </br> ";
+      html += "<b>criminal</b> (from 0 = not at all to 100 = totally). The study is divided into <b>two parts.</b> </br> ";
+      html += "In Part 1, you will evaluate 4 faces and in Part 2 you will evaluate the remaining 32 faces.</br> </br>";
       html += "As you will see, these faces have been <b>blurred</b> to make the task more challenging. </br></br>";
       html += "<p></br>Press <span class='light-keys'><kbd>space</kbd></span> to begin</p>";
       return html;
@@ -646,28 +634,25 @@ var preview_subgroup = [
   };
 
 
-  /* PREVIEW CIS INSTRUCTIONS */
-  var previewCIinst_subgroup = {
+  /* Judgment average CIs */
+  var previewCIinst_avg = {
     type: "html-keyboard-response",
     post_trial_gap: 300,
     choices: [32],
     stimulus: function() {
       var html = "";
-      html += "<h1>Faces rating</h1>";
-      html += "<p class='justify'>Before the evaluation task, <b>we will first briefly present you a sample of these faces</b> ";
-      html += "for you to better gauge the similarities and differences between them. </br> ";
-      html += "Faces will be automatically paced during 1 second each. Pleace remain focused.</br></br>";
+      html += "<h1>Faces rating: PART 1</h1>";
+      html += "<p class='justify'>Before the evaluation task, <b>we will first briefly present you the 4 faces that you will evaluate</b> ";
+      html += "for you to better gauge the similarities and differences between them. </br> </br> ";
+      html += "Faces will be <b>automatically paced</b> during 1 second each. Pleace remain focused.</br></br>";
       html += "<p></br>Press <span class='light-keys'><kbd>space</kbd></span> to begin</p>";
       return html;
     },
-      on_load: function() {
-          $(".jspsych-content").css("max-width", "90%");
-       }
   };
 
-/* PREVIEW CIS */
-  var previewCI_subgroup = {
-    timeline_variables: CIsStims_preview,
+  /* PREVIEW CIS */
+  var previewCI_avg = {
+    timeline_variables: CIsStims_avg,
     choices: jsPsych.NO_KEYS,
     trial_duration: 1000,
     post_trial_gap: 100,
@@ -678,35 +663,40 @@ var preview_subgroup = [
   };
 
   /* JUDGMENTS INSTRUCTIONS */
-  var jugmentInst_subgroup = {
+  var jugmentInst_avg = {
     type: "html-keyboard-response",
     post_trial_gap: 300,
     choices: [32],
     stimulus: function() {
       var html = "";
-      html += "<h1>Faces rating</h1>";
-      html += "<p class='justify'>Now, you will rate the 40 faces.</b>";
-      html += " Try to answer <b> as honestly and as spontaneously as possible. </b></br></br>";
+      html += "<h1>Faces rating: PART 1</h1>";
+      html += "<p class='justify'>Now, you will rate the 4 faces.</b>";
+      html += " Please try to answer <b> as honestly and as spontaneously as possible. </b></br></br>";
       html += "<p></br>Press <span class='light-keys'><kbd>space</kbd></span> to begin</p>";
       return html;
     },
   };
 
+  // Judgments
   var scaleAgressivity = ["0</br>Not agressive at all", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100</br>Totally aggressive"];
   var scaleTrustworthiness = ["0</br>Not trustworthy at all", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100</br>Totally trustworthy"];
   var scaleCriminality = ["0</br>Not criminal at all", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100</br>Totally criminal"];
 
+  var items_part12 = [
+        {prompt: "", name : 'agressivity', labels: scaleAgressivity, required: true},
+        {prompt: "", name : 'trustworthiness', labels: scaleTrustworthiness, required: true},
+        {prompt: "", name : 'criminality', labels: scaleCriminality, required: true},
+  ];
 
-  var judgments_subgroup = [];
-  CIsStims_subgroup.map(function(ciImg){
+
+items_part12 = _.shuffle(items_part12);
+
+  var judgments_avg = [];
+  CIsStims_avg.map(function(ciImg){
     var likert_trial = {
         type: 'survey-likert',
         preamble: ciImg.imgHtml,
-        questions: [
-          {prompt: "", labels: scaleAgressivity, required: true},
-          {prompt: "", labels: scaleTrustworthiness, required: true},
-          {prompt: "", labels: scaleCriminality, required: true},
-        ],
+        questions: items_part12,
         button_label: 'Continue',
         on_load: function() {
           $(".jspsych-content").css("max-width", "100%");
@@ -721,14 +711,102 @@ var preview_subgroup = [
         },
         on_finish: function(data) {
           var parsed_response  = JSON.parse(data.responses);
-          data.agressivity     = parsed_response.Q0 * 10;
-          data.trustworthiness = parsed_response.Q1 * 10;
-          data.criminality     = parsed_response.Q2 * 10;
+          data.agressivity     = parsed_response.agressivity * 10;
+          data.trustworthiness = parsed_response.trustworthiness * 10;
+          data.criminality     = parsed_response.criminality * 10;
+          data.ci              = ciImg.imgHtml;
+        },
+    };
+    judgments_avg.push(likert_trial);
+  });
+
+
+  /* JUDGMENTS INSTRUCTIONS */
+  var jugmentInst_subgroup = {
+    type: "html-keyboard-response",
+    post_trial_gap: 300,
+    choices: [32],
+    stimulus: function() {
+      var html = "";
+      html += "<h1>Faces rating: PART 2</h1>";
+      html += "<p class='justify'>In this new part, you will <b>judge 32 faces</b>. </br> ";
+      html += "Before the evaluation task, <b>we will first briefly present you a sample of these faces</b> ";
+      html += "for you to better gauge the similarities and differences between them. </br></br>  ";
+      html += "Faces will be <b>automatically paced</b> during 1 second each. Pleace remain focused.</br></br>";
+      html += "<p></br>Press <span class='light-keys'><kbd>space</kbd></span> to begin</p>";
+      return html;
+    },
+  };
+
+  /* PREVIEW CIS */
+  var previewCI_subgroup = {
+    timeline_variables: CIsStims_preview,
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 1000,
+    post_trial_gap: 100,
+    timeline: [{
+      type: 'html-keyboard-response',
+      stimulus: function() {return jsPsych.timelineVariable('imgHtml', true)},
+    }]
+  };
+
+    /* JUDGMENTS INSTRUCTIONS */
+  var jugmentInst_subgroup = {
+    type: "html-keyboard-response",
+    post_trial_gap: 300,
+    choices: [32],
+    stimulus: function() {
+      var html = "";
+      html += "<h1>Faces rating: PART 2</h1>";
+      html += "<p class='justify'>Now, you will rate the 32 faces.</b>";
+      html += " Again, try to answer <b> as honestly and as spontaneously as possible. </b></br></br>";
+      html += "<p></br>Press <span class='light-keys'><kbd>space</kbd></span> to begin</p>";
+      return html;
+    },
+  };
+
+  var judgments_subgroup = [];
+  CIsStims_subgroup.map(function(ciImg){
+    var likert_trial = {
+        type: 'survey-likert',
+        preamble: ciImg.imgHtml,
+        questions: items_part12,
+        button_label: 'Continue',
+        on_load: function() {
+          $(".jspsych-content").css("max-width", "100%");
+          $(".jspsych-survey-likert-statement").css("margin", "0px");
+          $(".jspsych-survey-likert-statement").css("padding", "0px");
+          $(".jspsych-survey-likert-opts").css("padding", "0 0 10px");
+          $("#jspsych-survey-likert-next").css("margin-top", "10px");
+          $("#jspsych-survey-likert-form").css("width", "800px");
+          $("li").css("width", "9%");
+        //   $("li:first-of-type").css("width", "110px");
+        //   $("li:last-of-type").css("width", "110px");
+        },
+        on_finish: function(data) {
+          var parsed_response  = JSON.parse(data.responses);
+          data.agressivity     = parsed_response.agressivity * 10;
+          data.trustworthiness = parsed_response.trustworthiness * 10;
+          data.criminality     = parsed_response.criminality * 10;
           data.ci              = ciImg.imgHtml;
         },
     };
     judgments_subgroup.push(likert_trial);
   });
+
+   var instr_demo = {
+    type: "html-keyboard-response",
+    post_trial_gap: 300,
+    choices: [32],
+    stimulus: function() {
+      var html = "";
+      html += "<p class='justify'>Part 2 is over. </b>";
+      html += "In this final phase, we will ask you a few questions.</br></br>";
+      html += "<p></br>Press <span class='light-keys'><kbd>space</kbd></span> to begin</p>";
+      return html;
+    },
+  };
+
 
   /* AGE */
   var age = {
@@ -832,19 +910,24 @@ var preview_subgroup = [
 
   // TIMELINE ----------------------------------------------------------------------------------------------------------
   timeline.push(consent);
-  timeline.push(Quit_expe);
   timeline.push(activeFullscreen);
   timeline.push(instr_gene);
-  timeline.push(previewCIinst_subgroup);
+  timeline.push(previewCIinst_avg);
+  timeline.push(previewCI_avg);
+  timeline.push(jugmentInst_avg);
+  timeline.push(judgments_avg);
+  timeline.push(jugmentInst_subgroup);
   timeline.push(previewCI_subgroup);
   timeline.push(jugmentInst_subgroup);
   timeline.push(judgments_subgroup);
+  timeline.push(instr_demo);
   timeline.push(age);
   timeline.push(gender);
   timeline.push(language);
   timeline.push(Prolific_reported);
   timeline.push(comments);  
   timeline.push(exitFullscreen);
+
   
   timeline = flatten(timeline); // do not remove this!
 
