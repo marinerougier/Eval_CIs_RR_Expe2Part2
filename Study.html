@@ -516,15 +516,6 @@ var cis_AppAgg_yellow_G1Y_instruction = [
 "400"
 ];
 
-  // Avg CIs
-
-  CIsStims_avg = imgLink_avg.map(function(e) {return githubCIs + e});
-  var CIsStims_avg = _.flattenDeep([CIsStims_avg]);
-  CIsStims_avg = CIsStims_avg.map(function(e) {return {imgHtml: "<img class='imgJudge' src='" + e + "'>"}});
-  CIsStims_avg = _.shuffle(CIsStims_avg);
-
-
-  // Subgroup CIs
 
   // Randomly pick n subgroup IDs from the two conditions
   cis_AppAff_blue_G1B_vaast = _.sampleSize(cis_AppAff_blue_G1B_vaast, n);
@@ -545,7 +536,9 @@ var cis_AppAgg_yellow_G1Y_instruction = [
   cis_AppAgg_yellow_G1Y_instruction = _.sampleSize(cis_AppAgg_yellow_G1Y_instruction, n);
 
 
-  // Approach / avoidance 
+  // Add relative path to CIs 
+  CIsStims_avg = imgLink_avg.map(function(e) {return githubCIs + e});
+
   cis_appaff_B_G1B_vaast = cis_AppAff_blue_G1B_vaast.map(function(e) {return githubCIs + "ci_" + e + "_sbgp_AppAff_blue_G1B_vaast.png"});
   cis_appaff_Y_G1B_vaast = cis_AppAff_yellow_G1B_vaast.map(function(e) {return githubCIs + "ci_" + e + "_sbgp_AppAff_yellow_G1B_vaast.png"});
   cis_appaff_B_G1Y_vaast = cis_AppAff_blue_G1Y_vaast.map(function(e) {return githubCIs + "ci_" + e + "_sbgp_AppAff_blue_G1Y_vaast.png"});
@@ -563,21 +556,28 @@ var cis_AppAgg_yellow_G1Y_instruction = [
   cis_appagg_B_G1Y_instruction = cis_AppAgg_blue_G1Y_instruction.map(function(e) {return githubCIs + "ci_" + e + "_sbgp_AppAgg_blue_G1Y_instruction.png"});
   cis_appagg_Y_G1Y_instruction = cis_AppAgg_yellow_G1Y_instruction.map(function(e) {return githubCIs + "ci_" + e + "_sbgp_AppAgg_yellow_G1Y_instruction.png"});
 
+
+  // flatten deep
+  var CIsStims_avg = _.flattenDeep([CIsStims_avg]);
+
   var CIsStims_subgroup = _.flattenDeep([cis_appaff_B_G1B_vaast, cis_appaff_Y_G1B_vaast, cis_appaff_B_G1Y_vaast, cis_appaff_Y_G1Y_vaast, cis_appagg_B_G1B_vaast, cis_appagg_Y_G1B_vaast, cis_appagg_B_G1Y_vaast, cis_appagg_Y_G1Y_vaast, cis_appaff_B_G1B_instruction, cis_appaff_Y_G1B_instruction, cis_appaff_B_G1Y_instruction, cis_appaff_Y_G1Y_instruction, cis_appagg_B_G1B_instruction, cis_appagg_Y_G1B_instruction, cis_appagg_B_G1Y_instruction, cis_appagg_Y_G1Y_instruction]);
 
   var CIsStims_preview = _.sampleSize(CIsStims_subgroup, 4);
-
-  // CIs stims for subgroup-level CIs
-  CIsStims_preview = CIsStims_preview.map(function(e) {return {imgHtml: "<img class='imgJudge' src='" + e + "'>"}});
-  CIsStims_subgroup = CIsStims_subgroup.map(function(e) {return {imgHtml: "<img class='imgJudge' src='" + e + "'>"}});
-
-  CIsStims_preview = _.shuffle(CIsStims_preview); // randomize order
-  CIsStims_subgroup = _.shuffle(CIsStims_subgroup); // randomize order
 
   // Preload all images
   preloadimages.push(CIsStims_avg);
   preloadimages.push(CIsStims_preview);
   preloadimages.push(CIsStims_subgroup);
+
+  // CIs stims
+  CIsStims_avg = CIsStims_avg.map(function(e) {return {imgHtml: "<img class='imgJudge' src='" + e + "'>"}});
+  CIsStims_preview = CIsStims_preview.map(function(e) {return {imgHtml: "<img class='imgJudge' src='" + e + "'>"}});
+  CIsStims_subgroup = CIsStims_subgroup.map(function(e) {return {imgHtml: "<img class='imgJudge' src='" + e + "'>"}});
+
+  // randomize order
+  CIsStims_avg = _.shuffle(CIsStims_avg);
+  CIsStims_preview = _.shuffle(CIsStims_preview);
+  CIsStims_subgroup = _.shuffle(CIsStims_subgroup);
 
   // EXPERIMENT --------------------------------------------------------------------------------------------------------
 
