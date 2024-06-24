@@ -520,7 +520,6 @@ var cis_AppAgg_yellow_G1Y_instruction = [
 
   CIsStims_avg = imgLink_avg.map(function(e) {return githubCIs + e});
   var CIsStims_avg = _.flattenDeep([CIsStims_avg]);
-  preloadimages.push(CIsStims_avg);
   CIsStims_avg = CIsStims_avg.map(function(e) {return {imgHtml: "<img class='imgJudge' src='" + e + "'>"}});
   CIsStims_avg = _.shuffle(CIsStims_avg);
 
@@ -567,9 +566,6 @@ var cis_AppAgg_yellow_G1Y_instruction = [
   var CIsStims_subgroup = _.flattenDeep([cis_appaff_B_G1B_vaast, cis_appaff_Y_G1B_vaast, cis_appaff_B_G1Y_vaast, cis_appaff_Y_G1Y_vaast, cis_appagg_B_G1B_vaast, cis_appagg_Y_G1B_vaast, cis_appagg_B_G1Y_vaast, cis_appagg_Y_G1Y_vaast, cis_appaff_B_G1B_instruction, cis_appaff_Y_G1B_instruction, cis_appaff_B_G1Y_instruction, cis_appaff_Y_G1Y_instruction, cis_appagg_B_G1B_instruction, cis_appagg_Y_G1B_instruction, cis_appagg_B_G1Y_instruction, cis_appagg_Y_G1Y_instruction]);
 
   var CIsStims_preview = _.sampleSize(CIsStims_subgroup, 4);
-  
-  preloadimages.push(CIsStims_preview);
-  preloadimages.push(CIsStims_subgroup);
 
   // CIs stims for subgroup-level CIs
   CIsStims_preview = CIsStims_preview.map(function(e) {return {imgHtml: "<img class='imgJudge' src='" + e + "'>"}});
@@ -577,6 +573,11 @@ var cis_AppAgg_yellow_G1Y_instruction = [
 
   CIsStims_preview = _.shuffle(CIsStims_preview); // randomize order
   CIsStims_subgroup = _.shuffle(CIsStims_subgroup); // randomize order
+
+  // Preload all images
+  preloadimages.push(CIsStims_avg);
+  preloadimages.push(CIsStims_preview);
+  preloadimages.push(CIsStims_subgroup);
 
   // EXPERIMENT --------------------------------------------------------------------------------------------------------
 
@@ -644,7 +645,7 @@ var cis_AppAgg_yellow_G1Y_instruction = [
       html += "<h1>Faces rating: PART 1</h1>";
       html += "<p class='justify'>Before the evaluation task, <b>we will first briefly present you the 4 faces that you will evaluate</b> ";
       html += "for you to better gauge the similarities and differences between them. </br> </br> ";
-      html += "Faces will be <b>automatically paced</b> during 1 second each. Pleace remain focused.</br></br>";
+      html += "Faces will be <b>automatically paced</b> during 2 seconds each. Pleace remain focused.</br></br>";
       html += "<p></br>Press <span class='light-keys'><kbd>space</kbd></span> to begin</p>";
       return html;
     },
@@ -732,7 +733,7 @@ items_part12 = _.shuffle(items_part12);
       html += "<p class='justify'>In this new part, you will <b>judge 32 faces</b>. </br> ";
       html += "Before the evaluation task, <b>we will first briefly present you a sample of these faces</b> ";
       html += "for you to better gauge the similarities and differences between them. </br></br>  ";
-      html += "Faces will be <b>automatically paced</b> during 1 second each. Pleace remain focused.</br></br>";
+      html += "Faces will be <b>automatically paced</b> during 2 seconds each. Pleace remain focused.</br></br>";
       html += "<p></br>Press <span class='light-keys'><kbd>space</kbd></span> to begin</p>";
       return html;
     },
