@@ -964,7 +964,7 @@ items_part12 = _.shuffle(items_part12);
       //jsPsych.data.displayData();
 
       /* Send data to Firebase and redirect to Qualtrics */
-      database.ref("Eval_Cis_PreExpe_Subgroup/" + id + "/").update({subdata}).then(function() { 
+      database.ref("Eval_Cis_RR_Expe2Part2/" + id + "/").update({subdata}).then(function() { 
         console.log("data sent!");
         $("#jspsych-content").html(debrief);
         //window.location = qlink; // redirect to qualtrics
